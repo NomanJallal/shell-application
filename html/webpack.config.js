@@ -66,7 +66,7 @@ const devConfig = {
     devServer: {
         static: path.join(__dirname, 'dist'),
         compress: true,
-        host: 'https://s6-development-17-ttydc2-shell.erp-deploy.com',
+        allowedHosts: 'all',
         port: 9000,
         client: {
             overlay: {
