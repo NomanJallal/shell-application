@@ -1,6 +1,6 @@
 const path = require('path');
 const { merge } = require('webpack-merge');
-const ESLintPlugin = require('eslint-webpack-plugin');
+// const ESLintPlugin = require('eslint-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
@@ -35,10 +35,10 @@ const baseConfig = {
         extensions: ['.tsx', '.ts', '.js'],
     },
     plugins: [
-        new ESLintPlugin({
-            context: path.resolve(__dirname, '.'),
-            extensions: ['js', 'jsx', 'ts', 'tsx'],
-        }),
+        // new ESLintPlugin({
+        //     context: path.resolve(__dirname, '.'),
+        //     extensions: ['js', 'jsx', 'ts', 'tsx'],
+        // }),
         new CopyWebpackPlugin({
             patterns: [{ from: './favicon.png', to: '.' }],
         }),
