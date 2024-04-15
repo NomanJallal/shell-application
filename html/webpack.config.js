@@ -66,6 +66,7 @@ const devConfig = {
     devServer: {
         static: path.join(__dirname, 'dist'),
         compress: true,
+        disableHostCheck: true,
         port: 9000,
         client: {
             overlay: {
