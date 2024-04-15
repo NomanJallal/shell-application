@@ -66,7 +66,10 @@ const devConfig = {
     devServer: {
         static: path.join(__dirname, 'dist'),
         compress: true,
-        disableHostCheck: true,
+        allowedHosts: [
+      'https://*.erp-deploy.com',
+      'http://*.erp-deploy.com',
+  ]
         port: 9000,
         client: {
             overlay: {
