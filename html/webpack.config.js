@@ -69,7 +69,7 @@ const devConfig = {
         allowedHosts: [
       'https://*.erp-deploy.com',
       'http://*.erp-deploy.com',
-  ]
+  ],
         port: 9000,
         client: {
             overlay: {
