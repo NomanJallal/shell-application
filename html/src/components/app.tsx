@@ -110,7 +110,7 @@ export class App extends Component {
                     flowControl={flowControl}
                 />
                 <iframe
-                    src="https://dev.erp-deploy.com/project"
+                    src="https://developer.erp-deploy.com/project"
                     style={{ display: "none" }}
                 >
                     Ifrarme
