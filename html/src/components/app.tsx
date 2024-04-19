@@ -66,6 +66,15 @@ const flowControl = {
     lowWater: 4,
 } as FlowControl;
 
+const apiUrl =
+    process.env.REACT_APP_NODE_ENV === "development"
+        ? process.env.REACT_APP_DEV_API_URL
+        : process.env.REACT_APP_PROD_API_URL;
+const loginUrl =
+    process.env.REACT_APP_NODE_ENV === "development"
+        ? process.env.REACT_APP_DEV_LOGIN_URL
+        : process.env.REACT_APP_PROD_LOGIN_URL;
+
 export class App extends Component {
     componentDidMount(): void {
         window.addEventListener("message", (event) => {
@@ -80,7 +89,7 @@ export class App extends Component {
 
             const config = {
                 method: "post",
-                url: "https://dev-api.erp-deploy.com/api/v1/builds/shell-auth",
+                url: `${apiUrl}/api/v1/builds/shell-auth`,
                 headers: {
                     Authorization: `Bearer ${parsedData.token}`,
                 },
@@ -94,13 +103,14 @@ export class App extends Component {
                 .catch(function (error) {
                     console.error(error);
                     alert(error);
+                    window.location.href = `${loginUrl}`;
                 });
         });
     }
 
     render() {
         return (
-            <div>
+            <div style={{ height: "100vh", zIndex: "10" }}>
                 <Terminal
                     id="terminal-container"
                     wsUrl={wsUrl}
@@ -109,10 +119,7 @@ export class App extends Component {
                     termOptions={termOptions}
                     flowControl={flowControl}
                 />
-                <iframe
-                    src="https://developer.erp-deploy.com/project"
-                    style={{ display: "none" }}
-                >
+                <iframe src={loginUrl} style={{ display: "none", zIndex: "1" }}>
                     Ifrarme
                 </iframe>
             </div>
