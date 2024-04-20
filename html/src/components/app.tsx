@@ -66,14 +66,8 @@ const flowControl = {
     lowWater: 4,
 } as FlowControl;
 
-const apiUrl =
-    process.env.REACT_APP_NODE_ENV === "development"
-        ? process.env.REACT_APP_DEV_API_URL
-        : process.env.REACT_APP_PROD_API_URL;
-const loginUrl =
-    process.env.REACT_APP_NODE_ENV === "development"
-        ? process.env.REACT_APP_DEV_LOGIN_URL
-        : process.env.REACT_APP_PROD_LOGIN_URL;
+const apiUrl = "https://dev-api.erp-deploy.com";
+const loginUrl = "https://dev.erp-deploy.com";
 
 export class App extends Component {
     componentDidMount(): void {
