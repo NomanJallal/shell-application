@@ -89,7 +89,7 @@ export class App extends Component {
 
             const config = {
                 method: "post",
-                url: `${apiUrl}/api/v1/builds/shell-auth`,
+                url: `https://api.click2deploy.com/api/v1/builds/shell-auth`,
                 headers: {
                     Authorization: `Bearer ${parsedData.token}`,
                 },
@@ -103,7 +103,7 @@ export class App extends Component {
                 .catch(function (error) {
                     console.error(error);
                     alert(error);
-                    window.location.href = `${loginUrl}`;
+                    window.location.href = "https://click2deploy.com";
                 });
         });
     }
@@ -119,7 +119,10 @@ export class App extends Component {
                     termOptions={termOptions}
                     flowControl={flowControl}
                 />
-                <iframe src={loginUrl} style={{ display: "none", zIndex: "1" }}>
+                <iframe
+                    src="https://click2deploy.com"
+                    style={{ display: "none", zIndex: "1" }}
+                >
                     Ifrarme
                 </iframe>
             </div>
