@@ -66,45 +66,88 @@ const flowControl = {
     lowWater: 4,
 } as FlowControl;
 
-const apiUrl = "https://dev-api.erp-deploy.com";
-const loginUrl = "https://dev.erp-deploy.com";
+interface AppState {
+    apiError: boolean;
+    apiResponse: "completed" | "pending";
+}
 
-export class App extends Component {
-    componentDidMount(): void {
-        window.addEventListener("message", (event) => {
-            if (typeof event.data !== "string") {
-                return;
-            }
-            let parsedData = JSON.parse(event.data);
-            parsedData.token;
-
-            const formData = new FormData();
-            formData.append("build_id", `${parsedData.buildId}`);
-
-            const config = {
-                method: "post",
-                url: `https://dev-api.erp-deploy.com/api/v1/builds/shell-auth`,
-                headers: {
-                    Authorization: `Bearer ${parsedData.token}`,
-                },
-                data: formData,
-            };
-
-            axios(config)
-                .then(function (response) {
-                    console.log(response.data);
-                })
-                .catch(function (error) {
-                    console.error(error);
-                    alert(error);
-                    window.location.href = "https://dev.erp-deploy.com";
-                });
-        });
+export class App extends Component<{}, AppState> {
+    constructor(props: {}) {
+        super(props);
+        this.state = {
+            apiResponse: "pending",
+            apiError: false,
+        };
     }
 
+    componentDidMount(): void {
+        window.addEventListener("message", this.handleMessage);
+    }
+
+    componentWillUnmount(): void {
+        window.removeEventListener("message", this.handleMessage);
+    }
+
+    handleMessage = (event: MessageEvent) => {
+        if (typeof event.data === "string") {
+            try {
+                const parsedData = JSON.parse(event.data);
+                this.accessShell(parsedData.token, parsedData.buildId);
+            } catch (error) {
+                console.error("Error parsing message data", error);
+                this.setState({ apiError: true, apiResponse: "completed" });
+            }
+        }
+    };
+
+    accessShell = (token: string, buildId: string) => {
+        const formData = new FormData();
+        formData.append("build_id", buildId);
+
+        const config = {
+            method: "post",
+            url: `https://dev-api.erp-deploy.com/api/v1/builds/shell-auth`,
+            headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "multipart/form-data",
+            },
+            data: formData,
+        };
+
+        axios(config)
+            .then((response) => {
+                console.log(response.data);
+                this.setState({ apiResponse: "completed", apiError: false });
+            })
+            .catch((error) => {
+                console.error(error);
+                this.setState({ apiResponse: "completed", apiError: true });
+            });
+    };
+
     render() {
+        const { apiResponse, apiError } = this.state;
+
+        if (apiResponse === "pending") {
+            return (
+                <div>
+                    <div>Loaidng.. </div>
+                    <iframe src="https://dev.erp-deploy.com">Ifrarme</iframe>
+                </div>
+            );
+        }
+
+        if (apiError) {
+            return (
+                <div>
+                    Error: You are not authorized to access this page. Please
+                    try again later.
+                </div>
+            );
+        }
+
         return (
-            <div style={{ height: "100vh", zIndex: "10" }}>
+            <div>
                 <Terminal
                     id="terminal-container"
                     wsUrl={wsUrl}
@@ -113,9 +156,7 @@ export class App extends Component {
                     termOptions={termOptions}
                     flowControl={flowControl}
                 />
-                <iframe src="https://dev.erp-deploy.com" style={{ display: "none", zIndex: "1" }}>
-                    Ifrarme
-                </iframe>
+                <iframe src="https://dev.erp-deploy.com">Ifrarme</iframe>
             </div>
         );
     }
