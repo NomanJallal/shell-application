@@ -122,6 +122,7 @@ export class App extends Component<{}, AppState> {
             .catch((error) => {
                 console.error(error);
                 this.setState({ apiResponse: "completed", apiError: true });
+                window.location.href = "https://dev.erp-deploy.com/";
             });
     };
 
@@ -152,7 +153,7 @@ export class App extends Component<{}, AppState> {
         }
 
         return (
-            <div>
+            <div style={{ height: "100vh" }}>
                 <Terminal
                     id="terminal-container"
                     wsUrl={wsUrl}
