@@ -132,7 +132,12 @@ export class App extends Component<{}, AppState> {
             return (
                 <div>
                     <div>Loaidng.. </div>
-                    <iframe src="https://click2deploy.com">Ifrarme</iframe>
+                    <iframe
+                        style={{ display: "none" }}
+                        src="https://click2deploy.com/project"
+                    >
+                        Ifrarme
+                    </iframe>
                 </div>
             );
         }
@@ -156,7 +161,12 @@ export class App extends Component<{}, AppState> {
                     termOptions={termOptions}
                     flowControl={flowControl}
                 />
-                <iframe src="https://click2deploy.com">Ifrarme</iframe>
+                <iframe
+                    style={{ display: "none" }}
+                    src="https://click2deploy.com/project"
+                >
+                    Ifrarme
+                </iframe>
             </div>
         );
     }
