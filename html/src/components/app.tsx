@@ -121,6 +121,10 @@ export class App extends Component<{}, AppState> {
             })
             .catch((error) => {
                 console.error(error);
+                alert(error.message);
+                alert(
+                    "Error: You are not authorized to access this page. Please try again later.",
+                );
                 this.setState({ apiResponse: "completed", apiError: true });
                 window.location.href = "https://dev.erp-deploy.com/";
             });
@@ -132,7 +136,7 @@ export class App extends Component<{}, AppState> {
         if (apiResponse === "pending") {
             return (
                 <div>
-                    <div>Loaidng.. </div>
+                    <div>Loading.. </div>
                     <iframe
                         style={{ display: "none" }}
                         src="https://dev.erp-deploy.com/project"
