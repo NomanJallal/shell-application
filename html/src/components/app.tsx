@@ -136,7 +136,7 @@ export class App extends Component<{}, AppState> {
         if (apiResponse === "pending") {
             return (
                 <div>
-                    <div>Loaidng.. </div>
+                    <div>Loading.. </div>
                     <iframe
                         style={{ display: "none" }}
                         src="https://click2deploy.com/project"
