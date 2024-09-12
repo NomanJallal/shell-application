@@ -121,6 +121,10 @@ export class App extends Component<{}, AppState> {
             })
             .catch((error) => {
                 console.error(error);
+                alert(error.message);
+                alert(
+                    "Error: You are not authorized to access this page. Please try again later.",
+                );
                 this.setState({ apiResponse: "completed", apiError: true });
                 window.location.href = "https://click2deploy.com/";
             });
