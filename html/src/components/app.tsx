@@ -139,7 +139,7 @@ export class App extends Component<{}, AppState> {
                     <div>Loading.. </div>
                     <iframe
                         style={{ display: "none" }}
-                        src="https://click2deploy.com/project"
+                        src="https://click2deploy.com/"
                     >
                         Ifrarme
                     </iframe>
@@ -168,7 +168,7 @@ export class App extends Component<{}, AppState> {
                 />
                 <iframe
                     style={{ display: "none" }}
-                    src="https://click2deploy.com/project"
+                    src="https://click2deploy.com/"
                 >
                     Ifrarme
                 </iframe>
