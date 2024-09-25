@@ -139,7 +139,7 @@ export class App extends Component<{}, AppState> {
                     <div>Loading.. </div>
                     <iframe
                         style={{ display: "none" }}
-                        src="https://dev.erp-deploy.com/project"
+                        src="https://dev.erp-deploy.com/"
                     >
                         Ifrarme
                     </iframe>
@@ -168,7 +168,7 @@ export class App extends Component<{}, AppState> {
                 />
                 <iframe
                     style={{ display: "none" }}
-                    src="https://dev.erp-deploy.com/project"
+                    src="https://dev.erp-deploy.com/"
                 >
                     Ifrarme
                 </iframe>
