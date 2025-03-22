@@ -102,7 +102,7 @@ export class Xterm {
     constructor(
         private options: XtermOptions,
         private sendCb: () => void
-    ) {}
+    ) { }
 
     dispose() {
         for (const d of this.disposables) {
@@ -224,6 +224,27 @@ export class Xterm {
     public sendData(data: string | Uint8Array) {
         const { socket, textEncoder } = this;
         if (socket?.readyState !== WebSocket.OPEN) return;
+
+        let input = typeof data === 'string' ? data : new TextDecoder().decode(data);
+
+        if (input === '\r' || input === '\n') {
+            const currentLine = this.terminal.buffer.active.getLine(this.terminal.buffer.active.cursorY)?.translateToString().trim() || '';
+            const lastPromptIndex = Math.max(
+                currentLine.lastIndexOf('#'),
+                currentLine.lastIndexOf('$')
+            );
+            const command = lastPromptIndex >= 0 ? currentLine.slice(lastPromptIndex + 1).trim() : currentLine.trim();
+
+            const blockedCommands = ['rm -rf /', 'shutdown', 'reboot', 'poweroff'];
+
+            if (blockedCommands.includes(command)) {
+                this.terminal.writeln("");
+                this.terminal.write("\x1b[31mCommand is restricted and cannot be executed.\x1b[0m cancelling command: ");
+                const ctrlC = new Uint8Array([Command.INPUT.charCodeAt(0), 0x03]);
+                socket.send(ctrlC);
+                return;
+            }
+        }
 
         if (typeof data === 'string') {
             const payload = new Uint8Array(data.length * 3 + 1);
