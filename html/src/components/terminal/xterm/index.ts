@@ -235,9 +235,43 @@ export class Xterm {
             );
             const command = lastPromptIndex >= 0 ? currentLine.slice(lastPromptIndex + 1).trim() : currentLine.trim();
 
-            const blockedCommands = ['rm -rf /', 'shutdown', 'reboot', 'poweroff'];
+            const blockedCommands = [
+                // Commands That Can Shutdown or Restart the Server
+                'shutdown',
+                'reboot',
+                'poweroff',
+                'halt',
+                'init 0',
+                'init 6',
 
-            if (blockedCommands.includes(command)) {
+                // Commands That Can Delete or Modify Critical Files
+                'rm -rf /',
+                'dd if=/dev/zero of=/dev/sda',
+                'mkfs.ext4 /dev/sdX',
+                'mv /etc /tmp',
+                'rmdir --ignore-fail-on-non-empty /',
+
+                // Commands That Can Affect the Odoo Database
+                'dropdb',
+                'drop table',
+                'truncate',
+
+                // Commands That Can Consume High CPU, RAM, or Disk Resources
+                ':(){ :|:& };:',
+                'yes > /dev/null &',
+                'nohup dd if=/dev/zero of=/dev/null &',
+                'find / -type f -exec cat {} > /dev/null \\;',
+
+                // Commands That Can Modify System Configuration
+                'chmod -R 777 /',
+                'chown -R nobody:nogroup /',
+                'nano /etc/sudoers',
+                'iptables -F',
+                'systemctl stop odoo',
+                'service postgresql stop',
+            ];
+
+            if (blockedCommands.includes(command) || command.startsWith('kill -9')) {
                 this.terminal.writeln("");
                 this.terminal.write("\x1b[31mCommand is restricted and cannot be executed.\x1b[0m cancelling command: ");
                 const ctrlC = new Uint8Array([Command.INPUT.charCodeAt(0), 0x03]);
