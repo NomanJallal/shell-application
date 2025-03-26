@@ -238,7 +238,6 @@ export class Xterm {
             const blockedCommands = [
                 // Commands That Can Shutdown or Restart the Server
                 'shutdown',
-                'reboot',
                 'poweroff',
                 'halt',
                 'init 0',
