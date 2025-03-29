@@ -268,9 +268,36 @@ export class Xterm {
                 'iptables -F',
                 'systemctl stop odoo',
                 'service postgresql stop',
+
+                // Process killing commands
+                'pkill system_monitoring.py',
+                'pkill odoo',
+                'pkill jupyter-lab',
+                'pkill webpack',
+                'pkill ttyd',
+                'pkill bash'
             ];
 
-            if (blockedCommands.includes(command) || command.startsWith('kill -9')) {
+            const blockedPatterns = [
+                /^kill\s+(-[0-9]+\s+)?\d+$/,
+                /^pkill\s+(-[0-9]+\s+)?(python3\s+)?system_monitoring\.py$/,
+                /^pkill\s+(-[0-9]+\s+)?(python3\s+)?odoo$/,
+                /^pkill\s+(-[0-9]+\s+)?jupyter-lab$/,
+                /^pkill\s+(-[0-9]+\s+)?webpack$/,
+                /^pkill\s+(-[0-9]+\s+)?ttyd$/,
+                /^pkill\s+(-[0-9]+\s+)?bash$/,
+                /^python3\s+\/usr\/bin\/odoo/,
+                /^python3\s+\/utils\/system_monitoring\/system_monitoring\.py/,
+                /^python3\s+system_monitoring\.py/,
+                /^ttyd\s+-p\s+7681/,
+                /^webpack\s+serve/,
+                /^webpack$/,
+                /^python3\s+\/usr\/local\/bin\/jupyter-lab/
+            ];
+
+            const isBlocked = blockedCommands.includes(command) || blockedPatterns.some(pattern => pattern.test(command));
+
+            if (isBlocked) {
                 this.terminal.writeln("");
                 this.terminal.write("\x1b[31mCommand is restricted and cannot be executed.\x1b[0m cancelling command: ");
                 const ctrlC = new Uint8Array([Command.INPUT.charCodeAt(0), 0x03]);
